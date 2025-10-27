@@ -1,0 +1,22 @@
+<div class="publicidad-container">
+  <header class="publicidad-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Eventos Corona</h1>
+    <button pButton type="button" label="Compra tu entrada" (click)="irCliente()"></button>
+  </header>
+
+  <div class="carrusel-wrapper">
+    <button class="nav-button left" (click)="moverIzquierda()">&#10094;</button>
+
+    <div class="carrusel-salones" #carrusel>
+      @for(salon of salones(); track salon.id) {
+        <div class="salon-card">
+          <h2>{{ salon.nombre }}</h2>
+          <p><strong>Capacidad:</strong> {{ salon.capacidad }}</p>
+          <div class="mapa" [id]="'map-' + salon.id" style="height: 200px;"></div>
+        </div>
+      }
+    </div>
+
+    <button class="nav-button right" (click)="moverDerecha()">&#10095;</button>
+  </div>
+</div>

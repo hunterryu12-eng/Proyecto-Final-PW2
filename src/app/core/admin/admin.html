@@ -1,0 +1,114 @@
+<div class="container">
+  <h2>Panel de Admin</h2>
+
+  <h3>Usuarios</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (usuario of usuarios(); track usuario.id) {
+        <tr>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.rol }}</td>
+          <td>{{ usuario.estado }}</td>
+          <td>
+            <button
+              pButton
+              type="button"
+              label="{{ usuario.estado === 'activo' ? 'Deshabilitar' : 'Habilitar' }}"
+              (click)="toggleEstado(usuario)">
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h3>Eventos</h3>
+  <ul>
+    @for(evento of eventos(); track evento.id) {
+      <li style="margin-bottom:20px;">
+        <strong>{{ evento.tipo }}</strong> - Fecha: {{ evento.fecha | date }} - Capacidad: {{ evento.capacidad }}
+        <br />
+        Salón: {{ getSalonDeEvento(evento.salonID)?.nombre || 'Sin asignar' }}
+        <div class="evento-map" id="map-evento-{{ evento.id }}" style="height: 200px; margin-top: 10px;"></div>
+      </li>
+    }
+  </ul>
+
+  <hr />
+
+  <h3>Salones</h3>
+  <button pButton type="button" label="Crear Salón" (click)="mostrarFormSalon.set(true)"></button>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Capacidad</th>
+        <th>Precio Base</th>
+        <th>Ubicación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(salon of salones(); track salon.id) {
+        <tr>
+          <td>{{ salon.nombre }}</td>
+          <td>{{ salon.capacidad }}</td>
+          <td>{{ salon.precioBase }}</td>
+          <td>
+            <div *ngIf="salon.ubicacion">
+              <div id="map-salon-{{ salon.id }}" style="height: 150px;"></div>
+            </div>
+            <span *ngIf="!salon.ubicacion">Sin ubicación</span>
+          </td>
+          <td>
+            <button pButton type="button" label="Editar" (click)="editarSalon(salon)"></button>
+            <button pButton type="button" label="Eliminar" (click)="eliminarSalon(salon)"></button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  @if(mostrarFormSalon()) {
+    <div class="modal-fondo" (click)="cerrarModal()"></div>
+    <div class="form-evento">
+      <h3>{{ nuevoSalon().id ? 'Editar Salón' : 'Crear Nuevo Salón' }}</h3>
+
+      <div>
+        <label>Nombre del salón:</label>
+        <input type="text" [(ngModel)]="nuevoSalon().nombre" />
+      </div>
+
+      <div>
+        <label>Capacidad máxima:</label>
+        <input type="number" [(ngModel)]="nuevoSalon().capacidad" />
+      </div>
+
+      <div>
+        <label>Precio base:</label>
+        <input type="number" [(ngModel)]="nuevoSalon().precioBase" />
+      </div>
+
+      <div>
+        <label>Ubicación (selecciona en el mapa):</label>
+        <div id="map" style="height: 300px; border-radius: 10px; margin-top: 10px;"></div>
+      </div>
+
+      <div class="botones" style="margin-top: 10px;">
+        <button pButton type="button" label="Guardar" (click)="crearSalon()"></button>
+        <button pButton type="button" label="Cancelar" (click)="cerrarModal()"></button>
+      </div>
+    </div>
+  }
+</div>

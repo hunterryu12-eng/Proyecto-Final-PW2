@@ -1,0 +1,57 @@
+<h2>Panel de Cliente</h2>
+
+<h3>Eventos disponibles</h3>
+<ul>
+  @for(evento of eventos(); track evento.id) {
+    <li>
+      <button pButton
+              type="button"
+              label="{{ evento.tipo }}"
+              (click)="seleccionarEvento(evento)">
+      </button>
+    </li>
+  }
+</ul>
+
+@if(eventoSeleccionado()) {
+  <div class="evento-detalle">
+    <h3>{{ eventoSeleccionado()?.tipo }}</h3>
+    <p>Fecha: {{ eventoSeleccionado()?.fecha | date }}</p>
+    <p>Capacidad: {{ eventoSeleccionado()?.capacidad }}</p>
+
+    <button pButton type="button" label="Comprar entrada" (click)="abrirModalCompra()"></button>
+  </div>
+}
+
+<p-dialog header="Confirmar compra"
+          [visible]="mostrarModalCompra()"
+          (onHide)="mostrarModalCompra.set(false)"
+          [modal]="true"
+          [closable]="true"
+          [style]="{width: '300px'}">
+  <div class="qr-container">
+    <img src="https://img.freepik.com/vector-premium/icono-codigo-qr-smartphone-aplicaciones-simbolo-escanear-informacion-cifrada-vector_717770-75.jpg"
+         alt="QR"
+         class="qr-img">
+    <p>Escanea tu entrada en el evento.</p>
+    <button pButton type="button" label="Confirmar compra" (click)="confirmarCompra()"></button>
+  </div>
+</p-dialog>
+
+@if(mensajeCompra()) {
+  <p style="color: green;">{{ mensajeCompra() }}</p>
+}
+
+<hr />
+
+<h3>Mis entradas</h3>
+<ul>
+  @for(entrada of entradas(); track entrada.id) {
+    <li>
+      Evento: {{ getNombreEvento(entrada.eventoID) }} |
+      Fecha del evento: {{ getFechaEvento(entrada.eventoID) | date }} |
+      Comprada el: {{ entrada.fechaCompra | date:'short' }}
+    </li>
+  }
+</ul>
+  

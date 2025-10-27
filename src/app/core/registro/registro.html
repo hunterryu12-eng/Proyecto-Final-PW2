@@ -1,0 +1,47 @@
+<div class="login-wrapper">
+<div class="login-container tema-fiesta">
+  <h3 class="titulo-login">Registrar</h3>
+  <form class="formulario-login">
+    <div class="form-group grupo-input">
+      <label for="email" class="etiqueta-input">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        [(ngModel)]="email"
+        required
+        class="input-login"
+      />
+    </div>
+
+    <div class="form-group grupo-input">
+      <label for="password" class="etiqueta-input">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        class="input-login"
+      />
+    </div>
+
+    <div class="form-group grupo-input">
+      <label for="rol" class="etiqueta-input">Rol</label>
+      <select id="rol" [(ngModel)]="rol" name="rol" class="input-login" required>
+        <option value="" disabled selected>Selecciona un rol</option>
+        <option value="admin">Admin</option>
+        <option value="cliente">Cliente</option>
+        <option value="agente">Agente</option>
+      </select>
+    </div>
+
+    <button type="button" class="boton-login" (click)="onRegistrar()">Registrar</button>
+
+    <p class="texto-registro">
+      ¿Ya tienes una cuenta?
+      <a class="link-registro" (click)="iniciar()">Inicia sesión</a>
+    </p>
+  </form>
+</div>
+</div>

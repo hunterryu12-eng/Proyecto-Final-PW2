@@ -1,0 +1,128 @@
+/* ===== CONTENEDOR PUBLICIDAD ===== */
+.publicidad-container {
+  padding: 30px 40px;
+  background: linear-gradient(135deg, #1b1b1b, #2e0057);
+  color: #f5f5f5;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px rgba(165,105,189,0.2) inset;
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+/* ===== HEADER ===== */
+.publicidad-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(165,105,189,0.7);
+}
+
+.publicidad-header button[pButton] {
+  padding: 12px 20px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #a569bd, #6f42c1);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px rgba(165,105,189,0.3) inset;
+  transition: all 0.3s ease;
+}
+
+.publicidad-header button[pButton]:hover {
+  background: linear-gradient(135deg, #6f42c1, #a569bd);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 18px rgba(165,105,189,0.5) inset;
+}
+
+/* ===== CARRUSEL ===== */
+.carrusel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  margin: 30px auto;
+}
+
+.carrusel-salones {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+
+/* Ocultar scrollbar en Webkit */
+.carrusel-salones::-webkit-scrollbar {
+  height: 8px;
+}
+.carrusel-salones::-webkit-scrollbar-thumb {
+  background: rgba(165,105,189,0.5);
+  border-radius: 4px;
+}
+.carrusel-salones::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+}
+
+.salon-card {
+  flex: 0 0 250px;
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(18px) saturate(180%);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(165,105,189,0.3) inset;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.salon-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(165,105,189,0.5);
+}
+
+.salon-card p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.salon-card .mapa {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: inset 0 0 15px rgba(165,105,189,0.3);
+}
+
+/* ===== BOTONES DE NAVEGACIÓN ===== */
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #a569bd, #6f42c1);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  font-size: 22px;
+  z-index: 10;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px rgba(165,105,189,0.3) inset;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  background: linear-gradient(135deg, #6f42c1, #a569bd);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 20px rgba(165,105,189,0.5) inset;
+}
+
+.nav-button.left {
+  left: -15px;
+}
+
+.nav-button.right {
+  right: -15px;
+}

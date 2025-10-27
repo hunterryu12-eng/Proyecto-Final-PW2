@@ -1,0 +1,262 @@
+<h2>Panel de Agente</h2>
+
+<h3>Crear/Editar Evento</h3>
+<div>
+  <label>Salón:</label>
+  <select [(ngModel)]="nuevoEvento().salonID">
+    <option value="">--Seleccionar Salón--</option>
+    @for(salon of salones(); track salon.id) {
+      <option [value]="salon.id">{{ salon.nombre }} (Cap: {{ salon.capacidad }})</option>
+    }
+  </select>
+
+  <label>Tipo de Evento:</label>
+  <select [(ngModel)]="nuevoTipo">
+    <option value="" disabled>--Seleccionar Tipo--</option>
+    <option value="Boda">Boda</option>
+    <option value="Cumpleaños">Cumpleaños</option>
+    <option value="Quinceaños">Quinceaños</option>
+    <option value="Fiesta Temática">Fiesta Temática</option>
+  </select>
+
+  <label>Fecha:</label>
+  <input type="date" [(ngModel)]="nuevoEvento().fecha" />
+
+  <label>Asistentes previstos:</label>
+  <input type="number" [(ngModel)]="nuevoEvento().capacidad" />
+
+  @if(nuevoEvento().id){
+    <button pButton type="button" label="Guardar Cambios" (click)="guardarEventoEditado()"></button>
+  }
+  @else{
+    <button pButton type="button" label="Crear Evento" (click)="crearEvento()"></button>
+  }
+</div>
+
+<hr />
+
+<h3>Mis Eventos</h3>
+<ul>
+  @for(evento of eventos(); track evento.id) {
+    <li>
+      <button pButton 
+              type="button" 
+              label="{{ evento.tipo }} - {{ getNombreSalon(evento.salonID) }} - {{ evento.fecha | date }}" 
+              (click)="seleccionarEvento(evento)">
+      </button>
+      <button pButton type="button" label="Editar" (click)="editarEvento(evento)"></button>
+      <button pButton type="button" label="Eliminar" (click)="eliminarEvento(evento)"></button>
+    </li>
+  }
+</ul>
+
+@if(eventoSeleccionado()) {
+  <div>
+    <h3>Administrando: {{ eventoSeleccionado()?.tipo }}</h3>
+    <p>Salón: {{ getNombreSalon(eventoSeleccionado()?.salonID || '') }}</p>
+    <p>Fecha: {{ eventoSeleccionado()?.fecha | date }}</p>
+    <p>Asistentes previstos: {{ eventoSeleccionado()?.capacidad }}</p>
+
+    <hr />
+    <h4>Mesas</h4>
+    <ul>
+      @for(mesa of mesas(); track mesa.id) {
+        <li>
+          Mesa {{ mesa.numero }} - Capacidad: {{ mesa.capacidad }} - Estado: {{ mesa.estado }}
+          <button pButton type="button" label="Editar" (click)="editarMesa(mesa)"></button>
+          <button pButton type="button" label="Eliminar" (click)="eliminarMesa(mesa)"></button>
+        </li>
+      }
+    </ul>
+    <button pButton type="button" label="Agregar Mesa" (click)="mostrarFormMesa.set(true)"></button>
+
+    @if(mostrarFormMesa()) {
+      <div class="form-mesa">
+        <label>Capacidad:</label>
+        <input type="number" [(ngModel)]="nuevaMesa().capacidad" />
+
+        <label>Precio:</label>
+        <input type="number" [(ngModel)]="nuevaMesa().precio" />
+
+        <label>Estado:</label>
+        <select [(ngModel)]="nuevaMesa().estado">
+          <option value="disponible">Disponible</option>
+          <option value="ocupada">Ocupada</option>
+          <option value="reservada">Reservada</option>
+        </select>
+
+        <button pButton type="button" label="Guardar" (click)="guardarMesa()"></button>
+        <button pButton type="button" label="Cancelar" (click)="mostrarFormMesa.set(false)"></button>
+      </div>
+    }
+
+    <hr />
+    <h4>Sillas</h4>
+    <ul>
+      @for(silla of sillas(); track silla.id) {
+        <li>
+          Silla - Mesa: {{ getNombreMesa(silla.mesaID || '') }} - Estado: {{ silla.estado }}
+          <button pButton type="button" label="Editar" (click)="editarSilla(silla)"></button>
+          <button pButton type="button" label="Eliminar" (click)="eliminarSilla(silla)"></button>
+        </li>
+      }
+    </ul>
+    <button pButton type="button" label="Agregar Silla" (click)="mostrarFormSilla.set(true)"></button>
+
+    @if(mostrarFormSilla()) {
+      <div class="form-silla">
+        <label>Asignar a Mesa:</label>
+        <select [(ngModel)]="nuevaSilla().mesaID">
+          <option value="">--Seleccionar Mesa--</option>
+          @for(mesa of mesas(); track mesa.id) {
+            <option [value]="mesa.id">Mesa {{ mesa.numero }}</option>
+          }
+        </select>
+
+        <label>Precio:</label>
+        <input type="number" [(ngModel)]="nuevaSilla().precio" />
+
+        <label>Estado:</label>
+        <select [(ngModel)]="nuevaSilla().estado">
+          <option value="disponible">Disponible</option>
+          <option value="ocupada">Ocupada</option>
+          <option value="reservada">Reservada</option>
+        </select>
+
+        <button pButton type="button" label="Guardar" (click)="guardarSilla()"></button>
+        <button pButton type="button" label="Cancelar" (click)="mostrarFormSilla.set(false)"></button>
+      </div>
+    }
+
+    <hr />
+    <h4>Mantelería</h4>
+    <ul>
+      @for(manteleria of mantelerias(); track manteleria.id) {
+        <li>
+          Tipo: {{ manteleria.tipo }} - Mesa: {{ getNombreMesa(manteleria.mesaID || '') }} - Estado: {{ manteleria.estado }}
+          <button pButton type="button" label="Editar" (click)="editarManteleria(manteleria)"></button>
+          <button pButton type="button" label="Eliminar" (click)="eliminarManteleria(manteleria)"></button>
+        </li>
+      }
+    </ul>
+    <button pButton type="button" label="Agregar Mantelería" (click)="mostrarFormManteleria.set(true)"></button>
+
+    @if(mostrarFormManteleria()) {
+      <div class="form-manteleria">
+        <label>Tipo:</label>
+        <input type="text" [(ngModel)]="nuevaManteleria().tipo" />
+
+        <label>Mesa:</label>
+        <select [(ngModel)]="nuevaManteleria().mesaID">
+          <option value="">--Seleccionar Mesa--</option>
+          @for(mesa of mesas(); track mesa.id) {
+            <option [value]="mesa.id">Mesa {{ mesa.numero }}</option>
+          }
+        </select>
+
+        <label>Precio:</label>
+        <input type="number" [(ngModel)]="nuevaManteleria().precio" />
+
+        <label>Estado:</label>
+        <select [(ngModel)]="nuevaManteleria().estado">
+          <option value="disponible">Disponible</option>
+          <option value="usado">Usado</option>
+          <option value="reservado">Reservado</option>
+        </select>
+
+        <button pButton type="button" label="Guardar" (click)="guardarManteleria()"></button>
+        <button pButton type="button" label="Cancelar" (click)="mostrarFormManteleria.set(false)"></button>
+      </div>
+    }
+
+    <hr />
+    <h4>Entradas Compradas</h4>
+    <ul>
+      @for(entrada of entradas(); track entrada.id) {
+        <li>
+          Cliente: {{ entrada.clienteID }} - Precio: ${{ entrada.precio }} - Fecha: {{ entrada.fechaCompra.toLocaleString() }}
+          <button pButton type="button" label="Confirmar entrada" (click)="confirmarEntrada(entrada)"></button>
+        </li>
+      }
+    </ul>
+
+    <hr>
+    <button pButton type="button" label="Terminar Evento" (click)="mostrarModalDevolucion.set(true)"></button>
+
+    @if(mostrarModalDevolucion()) {
+  <div class="modal-devolucion">
+    <h3>Materiales del Evento: {{ eventoSeleccionado()?.tipo }}</h3>
+
+    <h4>Mesas</h4>
+    <ul>
+      @for(mesa of mesas(); track mesa.id) {
+  <li>
+    Mesa {{ mesa.numero }} - Capacidad: {{ mesa.capacidad }} - Estado: {{ mesa.estado }}
+    
+    
+ 
+    <button pButton type="button" 
+            [disabled]="damagedMesas()[mesa.id]" 
+            label="Dañado" 
+            (click)="marcarDaniado('mesa', mesa)"></button>
+    <button pButton type="button" 
+            [disabled]="!damagedMesas()[mesa.id]" 
+            label="-" 
+            (click)="quitarDaniado('mesa', mesa)"></button>
+  </li>
+}
+
+    </ul>
+
+
+    <h4>Sillas</h4>
+    <ul>
+      @for(silla of sillas(); track silla.id) {
+  <li>
+    Silla - Mesa: {{ getNombreMesa(silla.mesaID || '') }} - Estado: {{ silla.estado }}
+    
+  
+    
+    <button pButton type="button" 
+            [disabled]="damagedSillas()[silla.id]" 
+            label="Dañado" 
+            (click)="marcarDaniado('silla', silla)"></button>
+    <button pButton type="button" 
+            [disabled]="!damagedSillas()[silla.id]" 
+            label="-" 
+            (click)="quitarDaniado('silla', silla)"></button>
+  </li>
+}
+
+    </ul>
+
+    <h4>Mantelería</h4>
+    <ul>
+      @for(manteleria of mantelerias(); track manteleria.id) {
+  <li>
+    Tipo: {{ manteleria.tipo }} - Mesa: {{ getNombreMesa(manteleria.mesaID || '') }} - Estado: {{ manteleria.estado }}
+    
+   
+    
+    <button pButton type="button" 
+            [disabled]="damagedMantelerias()[manteleria.id]" 
+            label="Dañado" 
+            (click)="marcarDaniado('manteleria', manteleria)"></button>
+    <button pButton type="button" 
+            [disabled]="!damagedMantelerias()[manteleria.id]" 
+            label="-" 
+            (click)="quitarDaniado('manteleria', manteleria)"></button>
+  </li>
+}
+
+    </ul>
+
+    <p>Total materiales dañados: ${{ totalDaniado() }}</p>
+    <button pButton type="button" label="Enviar Reporte" (click)="enviarReporteDaniado()"></button>
+
+    <button pButton type="button" label="Cerrar" (click)="mostrarModalDevolucion.set(false)"></button>
+  </div>
+}
+
+  </div>
+}
